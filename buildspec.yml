@@ -1,12 +1,14 @@
 version: 0.2
 env:
-  secrets-manager:
-    SPECTRAL_DSN: https://spu-f8f902fd350e4a80ac5172aac126ef92@spectral-us.checkpoint.com
-phases:
-  build:
-    commands:
-      - ...
-  post_build:
-    commands:
-      - curl -L "https://spectral-us.checkpoint.com/latest/x/sh?dsn=$SPECTRAL_DSN" | sh
-      - $HOME/.spectral/spectral scan --ok --engines secrets,iac,oss --include-tags base,audit,iac
+   SPECTRAL_DSN: https://spu-f8f902fd350e4a80ac5172aac126ef92@spectral-us.checkpoint.com
+phases: 
+    build: 
+        commands: 
+            - npm i --save 
+    post_build:
+        commands:
+           - curl -L "https://spectral-eu.checkpoint.com/latest/x/sh?dsn=$SPECTRAL_DSN"| sh
+           - SPECTRAL_DSN=https://spu-f8f902fd350e4a80ac5172aac126ef92@spectral-us.checkpoint.com $HOME/.spectral/spectral scan --ok  --include-tags base,audit,iac
+artifacts: 
+    files: 
+        - '**/*'
